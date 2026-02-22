@@ -1,0 +1,54 @@
+plugins {
+    id 'org.springframework.boot' version '4.0.2' apply false
+    id 'io.spring.dependency-management' version '1.1.7' apply false
+}
+allprojects {
+    group = 'ru.npepub'
+    version = '0.0.1-SNAPSHOT'
+
+    repositories {
+        mavenCentral()
+    }
+}
+
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'io.spring.dependency-management'
+    apply plugin: 'org.springframework.boot'
+
+    java {
+        toolchain {
+            languageVersion = JavaLanguageVersion.of(21)
+        }
+    }
+
+    dependencies {
+
+
+        implementation 'org.springframework.boot:spring-boot-starter-web'
+
+
+
+
+
+        compileOnly 'org.projectlombok:lombok:1.18.32'
+        annotationProcessor 'org.projectlombok:lombok:1.18.32'
+
+        testCompileOnly 'org.projectlombok:lombok:1.18.32'
+        testAnnotationProcessor 'org.projectlombok:lombok:1.18.32'
+
+        testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
+        testImplementation 'org.springframework.boot:spring-boot-starter-test'
+        testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+        testImplementation 'org.junit.jupiter:junit-jupiter:5.10.0'
+    }
+
+    tasks.withType(JavaCompile).configureEach {
+        options.encoding = 'UTF-8'
+    }
+
+    test {
+        useJUnitPlatform()
+    }
+}
