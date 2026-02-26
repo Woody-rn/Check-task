@@ -1,4 +1,9 @@
 rootProject.name = 'CheckTask'
 
-include 'task-scanner'
-include 'task-todo-list'
+if (file('task-scanner').exists()) {
+    include 'task-scanner'
+}
+
+if (file('task-todo-list').exists()) {
+    include 'task-todo-list'
+}
