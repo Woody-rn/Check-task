@@ -1,3 +1,4 @@
+#build project
 FROM eclipse-temurin:21-jdk-alpine AS builder
 WORKDIR /app
 COPY gradlew ./
@@ -10,6 +11,7 @@ RUN ./gradlew dependencies --no-daemon
 COPY task-todo-list/src task-todo-list/src
 RUN ./gradlew :task-todo-list:bootJar --no-daemon
 
+#run project
 FROM eclipse-temurin:21-jre-alpine
 WORKDIR /app
 COPY --from=builder /app/task-todo-list/build/libs/*.jar task-todo-list.jar
