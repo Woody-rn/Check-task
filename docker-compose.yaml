@@ -1,0 +1,6 @@
+services:
+  todo-list:
+    image: ghcr.io/${GITHUB_REPOSITORY_OWNER}/task-todo-list:latest
+    container_name: task-todo-list-prod
+    ports:
+      - "8080:8080"

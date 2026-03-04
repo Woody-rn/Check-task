@@ -1,0 +1,10 @@
+services:
+  todo-list:
+    build:
+      context: .
+      dockerfile: task-todo-list/Dockerfile
+    image: task-todo-list:local
+    container_name: task-todo-list-dev
+    ports:
+      - "8080:8080"
+    # ... остальные настройки
