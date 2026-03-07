@@ -5,6 +5,11 @@ services:
       dockerfile: task-todo-list/Dockerfile
     image: task-todo-list:local
     container_name: task-todo-list-dev
-    ports:
-      - "8080:8080"
-    # ... остальные настройки
+    networks:
+      - check_task_network
+    restart: unless-stopped
+
+  nginx:
+    volumes:
+      # Монтируем наш конфигурационный файл внутрь контейнера
+      - ./config/dev/nginx.conf:/etc/nginx/conf.d/default.conf:ro
