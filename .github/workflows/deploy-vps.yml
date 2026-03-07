@@ -1,0 +1,63 @@
+name: Deploy to VPS
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'task-todo-list/**'
+      - 'docker-compose.yaml'
+      - '.github/workflows/deploy.yml'
+  workflow_dispatch:  # Ручной запуск из UI GitHub
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write  # дает право пушить в GHCR
+
+    steps:
+      - uses: actions/checkout@v4
+
+      # Логин в GitHub Container Registry
+      - name: Login to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}  # Автоматическая переменная GitHub Actions. Содержит имя пользователя, который запустил workflow (например, ваш логин)
+          password: ${{ secrets.GITHUB_TOKEN }} # это автоматический секрет, GitHub сам создает этот токен для каждого запуска
+
+      # Сборка и публикация образа
+      - name: Build and push
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./task-todo-list/Dockerfile
+          push: true
+          tags: ghcr.io/woody-rn/task-todo-list:latest # GitHub подставит значение автоматически, содержит владельца репозитория
+
+      # Копирование docker-compose.yml на сервер
+      - name: Copy compose file
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.HOST_NPEPUB }}
+          username: ${{ secrets.NAME_NPEPUB }}
+          key: ${{ secrets.SSH_KEY_NPEPUB }}
+          source: "docker-compose.yaml"
+          target: "/opt/app-docker/check-task"
+
+      # Деплой на сервере
+      - name: Deploy into VPS
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.HOST_NPEPUB }}
+          username: ${{ secrets.NAME_NPEPUB }}
+          key: ${{ secrets.SSH_KEY_NPEPUB }}
+          script: |
+            # 1. Авторизуем Docker на сервере
+            echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u woody-rn --password-stdin
+            
+            # 2. Переходим в папку и обновляем проект
+            cd /opt/app-docker/check-task
+            docker compose pull  # Принудительно скачиваем новый образ
+            docker compose up -d
