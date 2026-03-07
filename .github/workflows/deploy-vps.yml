@@ -46,6 +46,16 @@ jobs:
           source: "docker-compose.yaml"
           target: "/opt/app-docker/check-task"
 
+      # Копирование конфигурации Nginx на сервер
+      - name: Copy nginx config
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.HOST_NPEPUB }}
+          username: ${{ secrets.NAME_NPEPUB }}
+          key: ${{ secrets.SSH_KEY_NPEPUB }}
+          source: "config/prod/nginx.conf"
+          target: "/opt/app-docker/check-task"
+
       # Деплой на сервере
       - name: Deploy into VPS
         uses: appleboy/ssh-action@v1.0.3
