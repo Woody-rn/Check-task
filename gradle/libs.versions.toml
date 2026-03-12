@@ -1,0 +1,20 @@
+[versions]
+spring-boot = "4.0.2"
+dependency-management = "1.1.7"
+lombok = "1.18.32"
+javalin = "6.7.0"
+junit = "5.10.0"
+junit-platform = "1.10.0"
+openapi = "3.0.2"
+
+[libraries]
+lombok = { module = "org.projectlombok:lombok", version.ref = "lombok" }
+javalin-bundle = { module = "io.javalin:javalin-bundle", version.ref = "javalin" }
+junit-jupiter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junit" }
+junit-platform = { module = "org.junit.platform:junit-platform-launcher", version.ref = "junit-platform" }
+
+spring-boot-starter-web = { module = "org.springframework.boot:spring-boot-starter-web" }
+spring-boot-starter-thymeleaf = { module = "org.springframework.boot:spring-boot-starter-thymeleaf" }
+spring-boot-starter-test = { module = "org.springframework.boot:spring-boot-starter-test" }
+
+springdoc-openapi = { module = "org.springdoc:springdoc-openapi-starter-webmvc-ui", version.ref = "openapi" }
