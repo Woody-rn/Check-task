@@ -1,0 +1,10 @@
+databaseChangeLog:
+  - include:
+      file: 2026-03-21/create-sprint-table.yaml
+      relativeToChangelogFile: true
+  - include:
+      file: 2026-03-21/create-task-table.yaml
+      relativeToChangelogFile: true
+  - include:
+      file: 2026-03-21/create-sprint-table.yaml
+      relativeToChangelogFile: true

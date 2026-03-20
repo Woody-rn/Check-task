@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scan Folder</title>
+    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h2>
+            <i class="fas fa-folder-open"></i>
+            Сканирование папки
+        </h2>
+    </div>
+
+    <div class="content">
+        <form id="scanForm">
+            <div class="form-group">
+                <label for="pathInput">
+                    <i class="fas fa-path"></i> Путь к папке
+                </label>
+                <div class="input-wrapper">
+                    <i class="fas fa-folder"></i>
+                    <input
+                            type="text"
+                            id="pathInput"
+                            placeholder="C:/Users/Documents"
+                    >
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="checkbox-wrapper" for="recursiveCheck">
+                    <i class="fas fa-sitemap"></i>
+                    <input type="checkbox" id="recursiveCheck" checked>
+                    <span>Сканировать рекурсивно (включая вложенные папки)</span>
+                </label>
+            </div>
+
+            <button type="submit">
+                <i class="fas fa-play"></i>
+                Начать сканирование
+                <i class="fas fa-arrow-right"></i>
+            </button>
+        </form>
+
+        <div class="result-section" id="resultSection" style="display: none;">
+            <h3>
+                <i class="fas fa-chart-bar"></i>
+                Результат сканирования
+            </h3>
+            <div class="result-container" id="resultContainer">
+                <pre id="result">Загрузка...</pre>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('scanForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const path = document.getElementById('pathInput').value;
+        const recursive = document.getElementById('recursiveCheck').checked;
+        const resultSection = document.getElementById('resultSection');
+        const resultElement = document.getElementById('result');
+
+        if (!path) {
+            showError('Пожалуйста, введите путь к папке');
+            return;
+        }
+
+        // Показываем секцию с результатами и индикатор загрузки
+        resultSection.style.display = 'block';
+        resultElement.innerHTML = '<div class="loading"><i class="fas fa-spinner"></i><br>Сканирование...</div>';
+
+        try {
+            const response = await fetch('http://localhost:7000/scan', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ path, recursive })
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.error || 'Ошибка при сканировании');
+            }
+
+            // Форматируем вывод
+            const formattedResult = JSON.stringify(data, null, 2);
+            resultElement.innerHTML = syntaxHighlight(formattedResult);
+
+        } catch (error) {
+            showError('Ошибка: ' + error.message);
+        }
+    });
+
+    function showError(message) {
+        const resultSection = document.getElementById('resultSection');
+        const resultElement = document.getElementById('result');
+
+        resultSection.style.display = 'block';
+        resultElement.innerHTML = `<div class="error-message">
+                <i class="fas fa-exclamation-circle"></i>
+                ${message}
+            </div>`;
+    }
+
+    // Простая подсветка синтаксиса JSON
+    function syntaxHighlight(json) {
+        json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
+            let cls = 'number';
+            if (/^"/.test(match)) {
+                if (/:$/.test(match)) {
+                    cls = 'key';
+                } else {
+                    cls = 'string';
+                }
+            } else if (/true|false/.test(match)) {
+                cls = 'boolean';
+            } else if (/null/.test(match)) {
+                cls = 'null';
+            }
+            return '<span class="' + cls + '">' + match + '</span>';
+        });
+    }
+
+    // Добавляем поддержку Enter для отправки формы
+    document.getElementById('pathInput').addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            document.getElementById('scanForm').dispatchEvent(new Event('submit'));
+        }
+    });
+
+    // Валидация пути (можно добавить дополнительные проверки)
+    document.getElementById('pathInput').addEventListener('blur', (e) => {
+        const path = e.target.value.trim();
+        if (path && !path.match(/^[a-zA-Z]:\\|^\\|^\/|^[a-zA-Z]:\//)) {
+            // Просто предупреждение, не блокируем отправку
+            console.log('Путь может быть некорректным');
+        }
+    });
+</script>
+
+<style>
+    /* Дополнительные стили для подсветки синтаксиса JSON */
+    .string { color: #2ecc71; }
+    .number { color: #3498db; }
+    .boolean { color: #e74c3c; }
+    .null { color: #95a5a6; }
+    .key { color: #9b59b6; }
+
+    .error-message {
+        background: #fff5f5;
+        color: #e53e3e;
+        padding: 15px 20px;
+        border-radius: 12px;
+        border: 2px solid #fc8181;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .loading {
+        text-align: center;
+        padding: 30px;
+        color: #667eea;
+    }
+
+    .loading i {
+        animation: spin 1s linear infinite;
+        font-size: 2em;
+        margin-bottom: 10px;
+    }
+
+    @keyframes spin {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+    }
+</style>
+</body>
+</html>

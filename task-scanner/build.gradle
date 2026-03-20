@@ -1,9 +1,13 @@
 description = 'task-scanner'
 
 dependencies {
-    implementation libs.javalin.bundle
+    implementation(libs.javalin.bundle)
+    implementation(libs.thymeleaf)
+    implementation(libs.liquibase.core)
+    implementation(libs.h2.db)
+    implementation(libs.hikariCP)
 
-    testImplementation libs.junit.jupiter
-    testRuntimeOnly libs.junit.platform
+    testImplementation(libs.junit.jupiter)
+    testRuntimeOnly(libs.junit.platform)
 }
 
