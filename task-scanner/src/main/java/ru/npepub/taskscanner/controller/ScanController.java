@@ -2,20 +2,19 @@ package ru.npepub.taskscanner.controller;
 
 import io.javalin.http.Context;
 import org.thymeleaf.TemplateEngine;
-import ru.npepub.taskscanner.config.TemplateEngineConfigurator;
 import ru.npepub.taskscanner.dto.ScanRequest;
-import ru.npepub.taskscanner.service.UploaderService;
+import ru.npepub.taskscanner.service.ProcessingCoordinator;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class ScanController {
 
-    private final UploaderService uploaderService;
+    private final ProcessingCoordinator processingCoordinator;
     private final TemplateEngine templateEngine;
 
-    public ScanController(UploaderService uploaderService, TemplateEngine template) {
-        this.uploaderService = uploaderService;
+    public ScanController(ProcessingCoordinator processingCoordinator, TemplateEngine template) {
+        this.processingCoordinator = processingCoordinator;
         this.templateEngine = template;
     }
 
@@ -29,7 +28,7 @@ public class ScanController {
         System.out.println("Recursive: " + recursive);
 
         // Здесь ваша логика сканирования
-        uploaderService.scanFiles(path);
+        processingCoordinator.scanFiles(path);
 
         // Отправьте JSON обратно, как ожидает JavaScript
         Map<String, Object> result = new HashMap<>();

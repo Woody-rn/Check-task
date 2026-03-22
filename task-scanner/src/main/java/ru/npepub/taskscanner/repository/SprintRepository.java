@@ -14,7 +14,7 @@ public class SprintRepository implements BaseRepository<Sprint, Long> {
         return Optional.empty();
     }
 
-    public Optional<Sprint> findByNumber(Long id) {
+    public Optional<Sprint> findByNumber(Long number) {
         return Optional.empty();
     }
 

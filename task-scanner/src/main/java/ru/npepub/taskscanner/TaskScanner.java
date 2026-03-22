@@ -10,18 +10,14 @@ import ru.npepub.taskscanner.exception.ExceptionHandler;
 import ru.npepub.taskscanner.repository.FileMetaDataRepository;
 import ru.npepub.taskscanner.repository.SprintRepository;
 import ru.npepub.taskscanner.repository.TaskRepository;
-import ru.npepub.taskscanner.service.UploaderService;
+import ru.npepub.taskscanner.service.*;
 
 public class TaskScanner {
     public static void main(String[] args) {
-        var sprintRepository = new SprintRepository();
-        var taskRepository = new TaskRepository();
-        var fileMetaDataRepository = new FileMetaDataRepository();
-        var uploader = new UploaderService(sprintRepository, taskRepository,fileMetaDataRepository);
-
+        var coordinator = init();
 
         var template = TemplateEngineConfigurator.create();
-        var scanController = new ScanController(uploader, template);
+        var scanController = new ScanController(coordinator, template);
         var validator = new Validator();
 
         Javalin javalin = JavalinConfigurator.create(
@@ -29,5 +25,18 @@ public class TaskScanner {
                 new RouteConfigurator(scanController, validator)
         );
         javalin.start(7000);
+    }
+
+    private static ProcessingCoordinator init(){
+        var fileSearchService = new FileSearchService();
+        var sprintService = new SprintService(new SprintRepository());
+        var taskService = new TaskService(new TaskRepository());
+        var fileMetaDataService = new FileMetaDataService(new FileMetaDataRepository());
+
+        return new ProcessingCoordinator(fileSearchService,
+                sprintService,
+                taskService,
+                fileMetaDataService
+                );
     }
 }

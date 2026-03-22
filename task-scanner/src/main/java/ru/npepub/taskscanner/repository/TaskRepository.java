@@ -35,7 +35,7 @@ public class TaskRepository implements BaseRepository<Task, Long> {
         return false;
     }
 
-    public Optional<Task> findBySprintIdAndTaskNumber(Long id, Long taskNum) {
+    public Optional<Task> findBySprintIdAndTaskNumber(Long sprintId, Long taskNumber) {
         return Optional.empty();
     }
 }

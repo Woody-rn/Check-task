@@ -32,4 +32,8 @@ public class FileMetaDataRepository implements BaseRepository<FileMetaData, Long
     public boolean delete(Long aLong) {
         return false;
     }
+
+    public Optional<FileMetaData> findByTaskIdAndFileName(Long id, String fileName) {
+        return Optional.empty();
+    }
 }
