@@ -1,0 +1,10 @@
+databaseChangeLog:
+  - changeSet:
+      id: add-task-constraints
+      author: nikitin ruslan
+
+      changes:
+        - addUniqueConstraint:
+            tableName: task
+            columnNames: sprint_id, number
+            constraintName: uk_task_sprint_number

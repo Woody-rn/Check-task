@@ -32,13 +32,3 @@ databaseChangeLog:
                   defaultValueComputed: CURRENT_TIMESTAMP
                   constraints:
                     nullable: false
-        - addUniqueConstraint:
-            tableName: tasks
-            columnNames: sprint_id, number
-            constraintName: uk_task_sprint_number
-        - createIndex:
-            tableName: task
-            indexName: idx_task_sprint_id
-            columns:
-              - column:
-                  name: sprint_id

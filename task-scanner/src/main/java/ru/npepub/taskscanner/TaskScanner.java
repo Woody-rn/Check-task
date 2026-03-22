@@ -4,6 +4,7 @@ import io.javalin.Javalin;
 import ru.npepub.taskscanner.config.JavalinConfigurator;
 import ru.npepub.taskscanner.config.RouteConfigurator;
 import ru.npepub.taskscanner.config.TemplateEngineConfigurator;
+import ru.npepub.taskscanner.config.db.DatabaseConfig;
 import ru.npepub.taskscanner.controller.ScanController;
 import ru.npepub.taskscanner.controller.Validator;
 import ru.npepub.taskscanner.exception.ExceptionHandler;
@@ -14,6 +15,7 @@ import ru.npepub.taskscanner.service.*;
 
 public class TaskScanner {
     public static void main(String[] args) {
+        DatabaseConfig.init();
         var coordinator = init();
 
         var template = TemplateEngineConfigurator.create();
