@@ -12,13 +12,18 @@ public class ScanController {
 
     private final ProcessingCoordinator processingCoordinator;
     private final TemplateEngine templateEngine;
+    private final Validator validator;
 
-    public ScanController(ProcessingCoordinator processingCoordinator, TemplateEngine template) {
+    public ScanController(ProcessingCoordinator processingCoordinator,
+                          TemplateEngine template,
+                          Validator validator) {
         this.processingCoordinator = processingCoordinator;
         this.templateEngine = template;
+        this.validator = validator;
     }
 
     public void scanAndUpload(Context ctx) {
+        validator.validate(ctx);
         // Теперь это работает, потому что это POST запрос с телом
         ScanRequest request = ctx.bodyAsClass(ScanRequest.class);
         String path = request.getPath();
@@ -41,7 +46,9 @@ public class ScanController {
     }
 
     public void get(Context ctx){
-        String html = templateEngine.process("upload", new org.thymeleaf.context.Context(ctx.req().getLocale()));
-        ctx.contentType("text/html").result(html);
+        String html = templateEngine.process("upload",
+                new org.thymeleaf.context.Context(ctx.req().getLocale()));
+        ctx.contentType("text/html")
+                .result(html);
     }
 }

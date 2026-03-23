@@ -19,12 +19,12 @@ public class TaskScanner {
         var coordinator = init();
 
         var template = TemplateEngineConfigurator.create();
-        var scanController = new ScanController(coordinator, template);
         var validator = new Validator();
+        var scanController = new ScanController(coordinator, template, validator);
 
         Javalin javalin = JavalinConfigurator.create(
                 new ExceptionHandler(),
-                new RouteConfigurator(scanController, validator)
+                new RouteConfigurator(scanController)
         );
         javalin.start(7000);
     }
