@@ -12,5 +12,5 @@ databaseChangeLog:
       file: 2026-03-21/create-task-table-index.yaml
       relativeToChangelogFile: true
   - include:
-      file: 2026-03-21/create_file_metadata_table.yaml
+      file: 2026-03-21/create-file-metadata-table.yaml
       relativeToChangelogFile: true

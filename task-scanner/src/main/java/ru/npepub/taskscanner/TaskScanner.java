@@ -15,7 +15,6 @@ import ru.npepub.taskscanner.service.*;
 
 public class TaskScanner {
     public static void main(String[] args) {
-        DatabaseConfig.init();
         var coordinator = init();
 
         var template = TemplateEngineConfigurator.create();
@@ -26,14 +25,21 @@ public class TaskScanner {
                 new ExceptionHandler(),
                 new RouteConfigurator(scanController)
         );
+
         javalin.start(7000);
     }
 
     private static ProcessingCoordinator init(){
+        var databaseConfig = new DatabaseConfig();
+        var sprintRepository = new SprintRepository(databaseConfig);
+        var taskRepository = new TaskRepository(databaseConfig);
+        var fileMetaDataRepository = new FileMetaDataRepository(databaseConfig);
+
         var fileSearchService = new FileSearchService();
-        var sprintService = new SprintService(new SprintRepository());
-        var taskService = new TaskService(new TaskRepository());
-        var fileMetaDataService = new FileMetaDataService(new FileMetaDataRepository());
+
+        var sprintService = new SprintService(sprintRepository);
+        var taskService = new TaskService(taskRepository);
+        var fileMetaDataService = new FileMetaDataService(fileMetaDataRepository);
 
         return new ProcessingCoordinator(fileSearchService,
                 sprintService,

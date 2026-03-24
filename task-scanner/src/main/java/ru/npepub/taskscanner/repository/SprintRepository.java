@@ -1,5 +1,6 @@
 package ru.npepub.taskscanner.repository;
 
+import ru.npepub.taskscanner.config.db.DatabaseConfig;
 import ru.npepub.taskscanner.entity.Sprint;
 
 import java.util.Collection;
@@ -8,6 +9,9 @@ import java.util.Optional;
 
 public class SprintRepository implements BaseRepository<Sprint, Long> {
 
+
+    public SprintRepository(DatabaseConfig databaseConfig) {
+    }
 
     @Override
     public Optional<Sprint> getById(Long id) {

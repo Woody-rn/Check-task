@@ -6,6 +6,7 @@ dependencies {
     implementation(libs.liquibase.core)
     implementation(libs.h2.db)
     implementation(libs.hikariCP)
+    implementation(libs.jooq)
 
     testImplementation(libs.junit.jupiter)
     testRuntimeOnly(libs.junit.platform)

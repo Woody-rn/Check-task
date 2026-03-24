@@ -1,6 +1,6 @@
 databaseChangeLog:
   - changeSet:
-      id: create-file-table
+      id: create-file-metadata-table
       author: nikitin ruslan
 
       changes:

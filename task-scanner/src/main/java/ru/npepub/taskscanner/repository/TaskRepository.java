@@ -1,5 +1,6 @@
 package ru.npepub.taskscanner.repository;
 
+import ru.npepub.taskscanner.config.db.DatabaseConfig;
 import ru.npepub.taskscanner.entity.Task;
 
 import java.util.Collection;
@@ -7,6 +8,12 @@ import java.util.List;
 import java.util.Optional;
 
 public class TaskRepository implements BaseRepository<Task, Long> {
+
+    private final DatabaseConfig databaseConfig;
+
+    public TaskRepository(DatabaseConfig databaseConfig) {
+        this.databaseConfig = databaseConfig;
+    }
 
     @Override
     public Optional<Task> getById(Long aLong) {

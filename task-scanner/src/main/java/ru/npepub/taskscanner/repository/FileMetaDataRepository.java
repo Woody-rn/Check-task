@@ -1,12 +1,20 @@
 package ru.npepub.taskscanner.repository;
 
+import ru.npepub.taskscanner.config.db.DatabaseConfig;
 import ru.npepub.taskscanner.entity.FileMetaData;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
-public class FileMetaDataRepository implements BaseRepository<FileMetaData, Long>{
+public class FileMetaDataRepository implements BaseRepository<FileMetaData, Long> {
+
+    private final DatabaseConfig databaseConfig;
+
+    public FileMetaDataRepository(DatabaseConfig databaseConfig) {
+        this.databaseConfig = databaseConfig;
+    }
+
     @Override
     public Optional<FileMetaData> getById(Long aLong) {
         return Optional.empty();
