@@ -13,8 +13,10 @@ public class SprintService {
     public Sprint getOrCreate(Long sprintNum) {
         return sprintRepository.findByNumber(sprintNum)
                 .orElseGet(() -> {
-                    Sprint newSprint = new Sprint();
-                    newSprint.setNumber(sprintNum);
+                    Sprint newSprint = Sprint.builder()
+                            .number(sprintNum)
+                            .build();
+
                     return sprintRepository.save(newSprint);
                 });
     }

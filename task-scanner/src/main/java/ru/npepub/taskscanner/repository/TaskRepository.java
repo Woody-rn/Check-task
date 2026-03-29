@@ -1,18 +1,21 @@
 package ru.npepub.taskscanner.repository;
 
+import org.jooq.DSLContext;
 import ru.npepub.taskscanner.config.db.DatabaseConfig;
 import ru.npepub.taskscanner.entity.Task;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Optional;
+
+import static org.jooq.impl.DSL.field;
+import static org.jooq.impl.DSL.table;
 
 public class TaskRepository implements BaseRepository<Task, Long> {
 
-    private final DatabaseConfig databaseConfig;
+    private final DSLContext dsl;
 
     public TaskRepository(DatabaseConfig databaseConfig) {
-        this.databaseConfig = databaseConfig;
+        this.dsl = databaseConfig.get();
     }
 
     @Override
@@ -22,13 +25,22 @@ public class TaskRepository implements BaseRepository<Task, Long> {
 
     @Override
     public Collection<Task> getAll() {
-        return List.of();
+        return dsl.select()
+                .from("task")
+                .fetchInto(Task.class);
     }
 
     @Override
     public Task save(Task entity) {
-        entity.setId(1L);
-        System.out.println("Task - " + entity.getId());
+        Long generatedId = dsl.insertInto(table("task"))
+                .set(field("number"), entity.getNumber())
+                .set(field("sprint_id"), entity.getSprintId())
+                .returningResult(field("id", Long.class))
+                .fetchOptional()
+                .map(record -> record.get(field("id", Long.class)))
+                .orElseThrow(() -> new RuntimeException("Failed to save sprint"));
+
+        entity.setId(generatedId);
         return entity;
     }
 
@@ -43,6 +55,9 @@ public class TaskRepository implements BaseRepository<Task, Long> {
     }
 
     public Optional<Task> findBySprintIdAndTaskNumber(Long sprintId, Long taskNumber) {
-        return Optional.empty();
+        return dsl.select()
+                .from("task")
+                .where("sprint_id = ? AND number = ?", sprintId, taskNumber)
+                .fetchOptionalInto(Task.class);
     }
 }

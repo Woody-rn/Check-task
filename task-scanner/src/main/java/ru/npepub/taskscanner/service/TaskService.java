@@ -16,9 +16,10 @@ public class TaskService {
         return taskRepository
                 .findBySprintIdAndTaskNumber(sprint.getId(), taskNum)
                 .orElseGet(() -> {
-                    Task newTask = new Task();
-                    newTask.setSprintId(sprint.getId());
-                    newTask.setNumber(taskNum);
+                    Task newTask = Task.builder()
+                            .sprintId(sprint.getId())
+                            .number(taskNum)
+                            .build();
                     return taskRepository.save(newTask);
                 });
     }

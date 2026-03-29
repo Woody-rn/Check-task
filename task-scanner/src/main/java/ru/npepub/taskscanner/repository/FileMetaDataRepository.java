@@ -1,5 +1,6 @@
 package ru.npepub.taskscanner.repository;
 
+import org.jooq.DSLContext;
 import ru.npepub.taskscanner.config.db.DatabaseConfig;
 import ru.npepub.taskscanner.entity.FileMetaData;
 
@@ -9,10 +10,10 @@ import java.util.Optional;
 
 public class FileMetaDataRepository implements BaseRepository<FileMetaData, Long> {
 
-    private final DatabaseConfig databaseConfig;
+    private final DSLContext dsl;
 
     public FileMetaDataRepository(DatabaseConfig databaseConfig) {
-        this.databaseConfig = databaseConfig;
+        dsl = databaseConfig.get();
     }
 
     @Override
@@ -27,7 +28,7 @@ public class FileMetaDataRepository implements BaseRepository<FileMetaData, Long
 
     @Override
     public FileMetaData save(FileMetaData entity) {
-        System.out.println("File - " + entity.getS3Url());
+        System.out.println("\t\tFile - " + entity.getS3Url());
         return null;
     }
 

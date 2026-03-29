@@ -1,6 +1,5 @@
 package ru.npepub.taskscanner.service;
 
-import ru.npepub.taskscanner.repository.FileMetaDataRepository;
 import ru.npepub.taskscanner.util.FilePatternUtils;
 
 import java.io.IOException;

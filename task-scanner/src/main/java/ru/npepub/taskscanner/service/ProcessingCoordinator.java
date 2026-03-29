@@ -32,6 +32,7 @@ public class ProcessingCoordinator {
 
     private void saveFilesToDatabase(List<Path> relativePaths) {
         for (Path relativePath : relativePaths) {
+            System.out.println(relativePath.toString());
             FilePatternUtils.parse(relativePath)
                     .ifPresent(info -> {
                         Sprint sprint = sprintService.getOrCreate(info.sprintNum());
