@@ -1,7 +1,7 @@
 package ru.npepub.taskscanner.service;
 
-import ru.npepub.taskscanner.entity.Sprint;
-import ru.npepub.taskscanner.entity.Task;
+import ru.npepub.taskscanner.entity.SprintEntity;
+import ru.npepub.taskscanner.entity.TaskEntity;
 import ru.npepub.taskscanner.repository.TaskRepository;
 
 public class TaskService {
@@ -12,12 +12,12 @@ public class TaskService {
         this.taskRepository = taskRepository;
     }
 
-    public Task getOrCreate(Sprint sprint, Long taskNum) {
+    public TaskEntity getOrCreate(SprintEntity sprint, Long taskNum) {
         return taskRepository
                 .findBySprintIdAndTaskNumber(sprint.getId(), taskNum)
                 .orElseGet(() -> {
                     System.out.println("work save TaskService");
-                    Task newTask = Task.builder()
+                    TaskEntity newTask = TaskEntity.builder()
                             .sprintId(sprint.getId())
                             .number(taskNum)
                             .build();

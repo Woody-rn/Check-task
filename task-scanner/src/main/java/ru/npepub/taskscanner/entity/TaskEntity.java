@@ -11,8 +11,9 @@ import java.time.LocalDateTime;
 @Setter
 @Builder
 @ToString
-public class Sprint {
+public class TaskEntity {
     private Long id;
+    private Long sprintId;
     private Long number;
     private LocalDateTime createdAt;
 }

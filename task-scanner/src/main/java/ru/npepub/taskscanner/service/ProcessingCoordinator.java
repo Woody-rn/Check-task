@@ -1,13 +1,12 @@
 package ru.npepub.taskscanner.service;
 
-import ru.npepub.taskscanner.entity.FileMetaData;
-import ru.npepub.taskscanner.entity.Sprint;
-import ru.npepub.taskscanner.entity.Task;
+import ru.npepub.taskscanner.entity.FileMetaDataEntity;
+import ru.npepub.taskscanner.entity.SprintEntity;
+import ru.npepub.taskscanner.entity.TaskEntity;
 import ru.npepub.taskscanner.util.FilePatternUtils;
 
 import java.nio.file.Path;
 import java.util.List;
-import java.util.regex.Pattern;
 
 public class ProcessingCoordinator {
     private final FileSearchService fileSearchService;
@@ -35,11 +34,11 @@ public class ProcessingCoordinator {
             System.out.println(relativePath.toString());
             FilePatternUtils.parse(relativePath)
                     .ifPresent(info -> {
-                        Sprint sprint = sprintService.getOrCreate(info.sprintNum());
+                        SprintEntity sprint = sprintService.getOrCreate(info.sprintNum());
                         System.out.println(sprint.toString());
-                        Task task = taskService.getOrCreate(sprint, info.taskNum());
+                        TaskEntity task = taskService.getOrCreate(sprint, info.taskNum());
                         System.out.println(task.toString());
-                        FileMetaData fileMetaData = fileMetaDataService.getOrCreate(task, relativePath);
+                        FileMetaDataEntity fileMetaData = fileMetaDataService.getOrCreate(task, relativePath);
                         System.out.println(fileMetaData.toString());
                     });
         }

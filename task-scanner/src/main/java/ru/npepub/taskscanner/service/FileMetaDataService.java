@@ -1,7 +1,7 @@
 package ru.npepub.taskscanner.service;
 
-import ru.npepub.taskscanner.entity.FileMetaData;
-import ru.npepub.taskscanner.entity.Task;
+import ru.npepub.taskscanner.entity.FileMetaDataEntity;
+import ru.npepub.taskscanner.entity.TaskEntity;
 import ru.npepub.taskscanner.repository.FileMetaDataRepository;
 
 import java.nio.file.Path;
@@ -13,13 +13,13 @@ public class FileMetaDataService {
         this.fileMetaDataRepository = fileMetaDataRepository;
     }
 
-    public FileMetaData getOrCreate(Task task, Path relativePath) {
+    public FileMetaDataEntity getOrCreate(TaskEntity task, Path relativePath) {
         String fileName = relativePath.getFileName().toString();
 
         return fileMetaDataRepository
                 .findByTaskIdAndFileName(task.getId(), fileName)
                 .orElseGet(() -> {
-                    FileMetaData fileMetaData = FileMetaData.builder()
+                    FileMetaDataEntity fileMetaData = FileMetaDataEntity.builder()
                             .taskId(task.getId())
                             .sprintId(task.getSprintId())
                             .fileName(fileName)

@@ -11,13 +11,8 @@ import java.time.LocalDateTime;
 @Setter
 @Builder
 @ToString
-public class FileMetaData {
+public class SprintEntity {
     private Long id;
-    private Long taskId;
-    private Long sprintId;
-    private String fileName;
-    private String s3Key;
-    private String s3Url;
-
+    private Long number;
     private LocalDateTime createdAt;
 }

@@ -2,7 +2,7 @@ package ru.npepub.taskscanner.repository;
 
 import org.jooq.DSLContext;
 import ru.npepub.taskscanner.config.db.DatabaseConfig;
-import ru.npepub.taskscanner.entity.FileMetaData;
+import ru.npepub.taskscanner.entity.FileMetaDataEntity;
 
 import java.util.Collection;
 import java.util.List;
@@ -11,7 +11,7 @@ import java.util.Optional;
 import static org.jooq.impl.DSL.field;
 import static org.jooq.impl.DSL.table;
 
-public class FileMetaDataRepository implements BaseRepository<FileMetaData, Long> {
+public class FileMetaDataRepository implements BaseRepository<FileMetaDataEntity, Long> {
 
     private final DSLContext dsl;
 
@@ -20,17 +20,17 @@ public class FileMetaDataRepository implements BaseRepository<FileMetaData, Long
     }
 
     @Override
-    public Optional<FileMetaData> getById(Long aLong) {
+    public Optional<FileMetaDataEntity> getById(Long aLong) {
         return Optional.empty();
     }
 
     @Override
-    public Collection<FileMetaData> getAll() {
+    public Collection<FileMetaDataEntity> getAll() {
         return List.of();
     }
 
     @Override
-    public FileMetaData save(FileMetaData entity) {
+    public FileMetaDataEntity save(FileMetaDataEntity entity) {
         Long generatedId = dsl.insertInto(table("file_metadata"))
                 .set(field("task_id"), entity.getTaskId())
                 .set(field("sprint_id"), entity.getSprintId())
@@ -47,7 +47,7 @@ public class FileMetaDataRepository implements BaseRepository<FileMetaData, Long
     }
 
     @Override
-    public FileMetaData update(Long aLong, FileMetaData entity) {
+    public FileMetaDataEntity update(Long aLong, FileMetaDataEntity entity) {
         return null;
     }
 
@@ -56,10 +56,10 @@ public class FileMetaDataRepository implements BaseRepository<FileMetaData, Long
         return false;
     }
 
-    public Optional<FileMetaData> findByTaskIdAndFileName(Long taskId, String fileName) {
+    public Optional<FileMetaDataEntity> findByTaskIdAndFileName(Long taskId, String fileName) {
         return dsl.select()
                 .from("file_metadata")
                 .where("task_id = ? AND file_name = ?", taskId, fileName)
-                .fetchOptionalInto(FileMetaData.class);
+                .fetchOptionalInto(FileMetaDataEntity.class);
     }
 }

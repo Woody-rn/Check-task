@@ -1,6 +1,6 @@
 package ru.npepub.taskscanner.service;
 
-import ru.npepub.taskscanner.entity.Sprint;
+import ru.npepub.taskscanner.entity.SprintEntity;
 import ru.npepub.taskscanner.repository.SprintRepository;
 
 public class SprintService {
@@ -10,10 +10,10 @@ public class SprintService {
         this.sprintRepository = sprintRepository;
     }
 
-    public Sprint getOrCreate(Long sprintNum) {
+    public SprintEntity getOrCreate(Long sprintNum) {
         return sprintRepository.findByNumber(sprintNum)
                 .orElseGet(() -> {
-                    Sprint newSprint = Sprint.builder()
+                    SprintEntity newSprint = SprintEntity.builder()
                             .number(sprintNum)
                             .build();
 

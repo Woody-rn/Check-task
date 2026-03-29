@@ -2,7 +2,7 @@ package ru.npepub.taskscanner.repository;
 
 import org.jooq.DSLContext;
 import ru.npepub.taskscanner.config.db.DatabaseConfig;
-import ru.npepub.taskscanner.entity.Sprint;
+import ru.npepub.taskscanner.entity.SprintEntity;
 
 import java.util.Collection;
 import java.util.Optional;
@@ -10,7 +10,7 @@ import java.util.Optional;
 import static org.jooq.impl.DSL.field;
 import static org.jooq.impl.DSL.table;
 
-public class SprintRepository implements BaseRepository<Sprint, Long> {
+public class SprintRepository implements BaseRepository<SprintEntity, Long> {
 
     private final DSLContext dsl;
 
@@ -19,26 +19,25 @@ public class SprintRepository implements BaseRepository<Sprint, Long> {
     }
 
     @Override
-    public Optional<Sprint> getById(Long id) {
+    public Optional<SprintEntity> getById(Long id) {
         return Optional.empty();
     }
 
-    public Optional<Sprint> findByNumber(Long sprintNum) {
+    public Optional<SprintEntity> findByNumber(Long sprintNum) {
         return dsl.select()
                 .from("sprint")
                 .where("number = ?", sprintNum)
-                .fetchOptionalInto(Sprint.class);
+                .fetchOptionalInto(SprintEntity.class);
     }
 
     @Override
-    public Collection<Sprint> getAll() {
-        return dsl.select()
-                .from("sprint")
-                .fetchInto(Sprint.class);
+    public Collection<SprintEntity> getAll() {
+        return dsl.selectFrom("sprint")
+                .fetchInto(SprintEntity.class);
     }
 
     @Override
-    public Sprint save(Sprint entity) {
+    public SprintEntity save(SprintEntity entity) {
         Long generatedId = dsl.insertInto(table("sprint"))
                 .set(field("number"), entity.getNumber())
                 .returningResult(field("id", Long.class))
@@ -51,7 +50,7 @@ public class SprintRepository implements BaseRepository<Sprint, Long> {
     }
 
     @Override
-    public Sprint update(Long id, Sprint entity) {
+    public SprintEntity update(Long id, SprintEntity entity) {
         return null;
     }
 

@@ -2,7 +2,7 @@ package ru.npepub.taskscanner.repository;
 
 import org.jooq.DSLContext;
 import ru.npepub.taskscanner.config.db.DatabaseConfig;
-import ru.npepub.taskscanner.entity.Task;
+import ru.npepub.taskscanner.entity.TaskEntity;
 
 import java.util.Collection;
 import java.util.Optional;
@@ -10,7 +10,7 @@ import java.util.Optional;
 import static org.jooq.impl.DSL.field;
 import static org.jooq.impl.DSL.table;
 
-public class TaskRepository implements BaseRepository<Task, Long> {
+public class TaskRepository implements BaseRepository<TaskEntity, Long> {
 
     private final DSLContext dsl;
 
@@ -19,19 +19,19 @@ public class TaskRepository implements BaseRepository<Task, Long> {
     }
 
     @Override
-    public Optional<Task> getById(Long aLong) {
+    public Optional<TaskEntity> getById(Long aLong) {
         return Optional.empty();
     }
 
     @Override
-    public Collection<Task> getAll() {
+    public Collection<TaskEntity> getAll() {
         return dsl.select()
                 .from("task")
-                .fetchInto(Task.class);
+                .fetchInto(TaskEntity.class);
     }
 
     @Override
-    public Task save(Task entity) {
+    public TaskEntity save(TaskEntity entity) {
         Long generatedId = dsl.insertInto(table("task"))
                 .set(field("number"), entity.getNumber())
                 .set(field("sprint_id"), entity.getSprintId())
@@ -45,7 +45,7 @@ public class TaskRepository implements BaseRepository<Task, Long> {
     }
 
     @Override
-    public Task update(Long aLong, Task entity) {
+    public TaskEntity update(Long aLong, TaskEntity entity) {
         return null;
     }
 
@@ -54,7 +54,7 @@ public class TaskRepository implements BaseRepository<Task, Long> {
         return false;
     }
 
-    public Optional<Task> findBySprintIdAndTaskNumber(Long sprintId, Long taskNumber) {
+    public Optional<TaskEntity> findBySprintIdAndTaskNumber(Long sprintId, Long taskNumber) {
         return dsl.select(
                         field("id"),
                         field("sprint_id").as("sprintId"),
@@ -63,6 +63,6 @@ public class TaskRepository implements BaseRepository<Task, Long> {
                 )
                 .from("task")
                 .where("sprint_id = ? AND number = ?", sprintId, taskNumber)
-                .fetchOptionalInto(Task.class);
+                .fetchOptionalInto(TaskEntity.class);
     }
 }
