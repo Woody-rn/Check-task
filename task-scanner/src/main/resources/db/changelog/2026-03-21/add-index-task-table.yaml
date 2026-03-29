@@ -1,12 +1,12 @@
 databaseChangeLog:
   - changeSet:
-      id: create-task-table-index
+      id: add-index-task-table
       author: nikitin ruslan
 
       changes:
         - createIndex:
             tableName: task
-            indexName: idx_task_sprint_id
+            indexName: idx_task_sprint_id_and_number
             columns:
               - column:
                   name: sprint_id

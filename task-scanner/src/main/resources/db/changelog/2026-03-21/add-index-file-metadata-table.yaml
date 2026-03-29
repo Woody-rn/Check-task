@@ -1,0 +1,14 @@
+databaseChangeLog:
+  - changeSet:
+      id: add-index-file-metadata-table
+      author: nikitin ruslan
+
+      changes:
+        - createIndex:
+            tableName: file_metadata
+            indexName: idx_file_metadata_task_id_and_filename
+            columns:
+              - column:
+                  name: task_id
+              - column:
+                  name: file_name

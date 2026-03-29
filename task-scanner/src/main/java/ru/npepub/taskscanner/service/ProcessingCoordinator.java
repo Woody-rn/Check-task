@@ -36,8 +36,11 @@ public class ProcessingCoordinator {
             FilePatternUtils.parse(relativePath)
                     .ifPresent(info -> {
                         Sprint sprint = sprintService.getOrCreate(info.sprintNum());
+                        System.out.println(sprint.toString());
                         Task task = taskService.getOrCreate(sprint, info.taskNum());
+                        System.out.println(task.toString());
                         FileMetaData fileMetaData = fileMetaDataService.getOrCreate(task, relativePath);
+                        System.out.println(fileMetaData.toString());
                     });
         }
     }

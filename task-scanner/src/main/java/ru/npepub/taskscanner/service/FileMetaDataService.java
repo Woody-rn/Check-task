@@ -19,12 +19,13 @@ public class FileMetaDataService {
         return fileMetaDataRepository
                 .findByTaskIdAndFileName(task.getId(), fileName)
                 .orElseGet(() -> {
-                    FileMetaData fileMetaData = new FileMetaData();
-                    fileMetaData.setTaskId(task.getId());
-                    fileMetaData.setSprintId(task.getSprintId());
-                    fileMetaData.setFileName(fileName);
-                    fileMetaData.setS3Key("s3Key");
-                    fileMetaData.setS3Url(relativePath.toString());
+                    FileMetaData fileMetaData = FileMetaData.builder()
+                            .taskId(task.getId())
+                            .sprintId(task.getSprintId())
+                            .fileName(fileName)
+                            .s3Key("s3Key")
+                            .s3Url(relativePath.toString())
+                            .build();
 
                     return fileMetaDataRepository.save(fileMetaData);
                 });

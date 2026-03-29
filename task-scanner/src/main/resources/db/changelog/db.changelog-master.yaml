@@ -6,11 +6,14 @@ databaseChangeLog:
       file: 2026-03-21/create-task-table.yaml
       relativeToChangelogFile: true
   - include:
-      file: 2026-03-21/add-task-constraints.yaml
-      relativeToChangelogFile: true
-  - include:
-      file: 2026-03-21/create-task-table-index.yaml
-      relativeToChangelogFile: true
-  - include:
       file: 2026-03-21/create-file-metadata-table.yaml
+      relativeToChangelogFile: true
+  - include:
+      file: 2026-03-21/add-constraints-task-table.yaml
+      relativeToChangelogFile: true
+  - include:
+      file: 2026-03-21/add-index-task-table.yaml
+      relativeToChangelogFile: true
+  - include:
+      file: 2026-03-21/add-index-file-metadata-table.yaml
       relativeToChangelogFile: true

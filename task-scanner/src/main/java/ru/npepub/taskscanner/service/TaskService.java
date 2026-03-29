@@ -16,6 +16,7 @@ public class TaskService {
         return taskRepository
                 .findBySprintIdAndTaskNumber(sprint.getId(), taskNum)
                 .orElseGet(() -> {
+                    System.out.println("work save TaskService");
                     Task newTask = Task.builder()
                             .sprintId(sprint.getId())
                             .number(taskNum)

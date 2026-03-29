@@ -38,7 +38,7 @@ public class TaskRepository implements BaseRepository<Task, Long> {
                 .returningResult(field("id", Long.class))
                 .fetchOptional()
                 .map(record -> record.get(field("id", Long.class)))
-                .orElseThrow(() -> new RuntimeException("Failed to save sprint"));
+                .orElseThrow(() -> new RuntimeException("Failed to save task"));
 
         entity.setId(generatedId);
         return entity;
@@ -55,7 +55,12 @@ public class TaskRepository implements BaseRepository<Task, Long> {
     }
 
     public Optional<Task> findBySprintIdAndTaskNumber(Long sprintId, Long taskNumber) {
-        return dsl.select()
+        return dsl.select(
+                        field("id"),
+                        field("sprint_id").as("sprintId"),
+                        field("number"),
+                        field("created_at").as("createdAt")
+                )
                 .from("task")
                 .where("sprint_id = ? AND number = ?", sprintId, taskNumber)
                 .fetchOptionalInto(Task.class);

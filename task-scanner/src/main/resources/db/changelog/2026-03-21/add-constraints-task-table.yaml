@@ -1,6 +1,6 @@
 databaseChangeLog:
   - changeSet:
-      id: add-task-constraints
+      id: add-constraints-task-table
       author: nikitin ruslan
 
       changes:

@@ -23,10 +23,10 @@ public class SprintRepository implements BaseRepository<Sprint, Long> {
         return Optional.empty();
     }
 
-    public Optional<Sprint> findByNumber(Long number) {
+    public Optional<Sprint> findByNumber(Long sprintNum) {
         return dsl.select()
                 .from("sprint")
-                .where("number = ?", number)
+                .where("number = ?", sprintNum)
                 .fetchOptionalInto(Sprint.class);
     }
 
