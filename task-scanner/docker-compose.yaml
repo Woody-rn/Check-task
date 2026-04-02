@@ -1,0 +1,10 @@
+services:
+  scanner:
+    build:
+      context: ..
+      dockerfile: ./task-scanner/Dockerfile
+    image: task-scanner:local
+    container_name: task-scanner-dev
+    ports:
+      - "7000:7000"
+    restart: unless-stopped

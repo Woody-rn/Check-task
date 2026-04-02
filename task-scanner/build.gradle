@@ -1,3 +1,5 @@
+apply plugin: "com.gradleup.shadow"
+
 description = 'task-scanner'
 
 dependencies {
@@ -12,3 +14,10 @@ dependencies {
     testRuntimeOnly(libs.junit.platform)
 }
 
+jar {
+    manifest {
+        attributes(
+                'Main-Class': 'ru.npepub.taskscanner.TaskScanner'
+        )
+    }
+}
