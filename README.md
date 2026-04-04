@@ -1,0 +1,1 @@
+docker compose -f task-scanner/docker-compose.yaml up

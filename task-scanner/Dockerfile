@@ -6,7 +6,10 @@ COPY gradle gradle
 COPY build.gradle settings.gradle ./
 COPY task-scanner/build.gradle task-scanner/
 
-RUN chmod +x gradlew
+# Устанавливаем dos2unix и конвертируем переносы строк
+RUN apk add --no-cache dos2unix && \
+    dos2unix gradlew && \
+    chmod +x gradlew
 RUN ./gradlew dependencies --no-daemon
 COPY task-scanner/src task-scanner/src
 RUN ./gradlew :task-scanner:shadowJar --no-daemon
