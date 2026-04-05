@@ -6,6 +6,6 @@ services:
       - "7000:7000"
     restart: unless-stopped
     volumes:
-      - ${HOST_SCAN_PATH}:/data/scan
+      - ${HOST_SCAN_PATH:-./scan-data}:/data/scan
     networks:
       - check_task_network
