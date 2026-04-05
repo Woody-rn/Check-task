@@ -1,3 +1,6 @@
+include:
+  - path: ./task-scanner/docker-compose.yaml
+
 services:
   todo-list:
     image: ghcr.io/woody-rn/task-todo-list:latest
@@ -20,6 +23,45 @@ services:
     networks:
       - check_task_network
     restart: unless-stopped
+
+  postgres:
+    image: postgres:18-alpine
+    container_name: task-postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: mydb_postgres
+      POSTGRES_INITDB_ARGS: "--encoding=UTF8 --locale=ru_RU.UTF-8"
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres -d mydb_postgres" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - check_task_network
+    restart: unless-stopped
+
+  liquibase:
+    image: liquibase/liquibase:4.33-alpine
+    container_name: task-liquibase
+    environment:
+      - LIQUIBASE_SEARCH_PATH=/liquibase/changelog  # Добавьте это
+    depends_on:
+      postgres:
+        condition: service_healthy
+    command:
+      - --url=jdbc:postgresql://task-postgres:5432/mydb_postgres
+      - --username=postgres
+      - --password=postgres
+      - --changeLogFile=changelog-master.yaml
+      - update
+    volumes:
+      - ./liquibase/changelog:/liquibase/changelog
+    networks:
+      - check_task_network
+    restart: no
 
 networks:
   check_task_network:
