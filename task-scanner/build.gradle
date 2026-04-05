@@ -6,7 +6,7 @@ dependencies {
     implementation(libs.javalin.bundle)
     implementation(libs.thymeleaf)
     implementation(libs.liquibase.core)
-    implementation(libs.h2.db)
+    implementation(libs.postgresql)
     implementation(libs.hikariCP)
     implementation(libs.jooq)
 

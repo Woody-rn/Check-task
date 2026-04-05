@@ -19,7 +19,7 @@ class DatabaseMigration {
                     .findCorrectDatabaseImplementation(jdbcConn);
 
             Liquibase liquibase = new Liquibase(
-                    "db/changelog/db.changelog-master.yaml",
+                    "migration/changelog/db.changelog-master.yaml",
                     new ClassLoaderResourceAccessor(),
                     impDB
             );

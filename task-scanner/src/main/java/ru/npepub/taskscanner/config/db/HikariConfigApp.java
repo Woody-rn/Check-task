@@ -8,9 +8,9 @@ class HikariConfigApp {
 
     static HikariDataSource createDataSource() {
         com.zaxxer.hikari.HikariConfig config = new com.zaxxer.hikari.HikariConfig();
-        config.setJdbcUrl("jdbc:h2:~/taskdb");
-        config.setUsername("sa");
-        config.setPassword("");
+        config.setJdbcUrl("jdbc:postgresql://task-postgres:5432/mydb_postgres");
+        config.setUsername("postgres");
+        config.setPassword("postgres");
         config.setMaximumPoolSize(5);
 
         dataSource = new HikariDataSource(config);
