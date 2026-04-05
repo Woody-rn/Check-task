@@ -1,9 +1,6 @@
 services:
   scanner:
-    build:
-      context: ..
-      dockerfile: ./task-scanner/Dockerfile
-    image: task-scanner:local
+    image: ghcr.io/woody-rn/task-scanner:latest
     container_name: task-scanner-dev
     ports:
       - "7000:7000"

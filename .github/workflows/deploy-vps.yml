@@ -36,24 +36,23 @@ jobs:
           push: true
           tags: ghcr.io/woody-rn/task-todo-list:latest # GitHub подставит значение автоматически, содержит владельца репозитория
 
-      # Копирование docker-compose.yml на сервер
+      # Сборка и публикация task-scanner
+      - name: Build and push task-scanner
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./task-scanner/Dockerfile
+          push: true
+          tags: ghcr.io/woody-rn/task-scanner:latest
+
+      # Копирование docker-compose.yml и конфигурации Nginx на сервер
       - name: Copy compose file
         uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.HOST_NPEPUB }}
           username: ${{ secrets.NAME_NPEPUB }}
           key: ${{ secrets.SSH_KEY_NPEPUB }}
-          source: "docker-compose.yaml"
-          target: "/opt/app-docker/check-task"
-
-      # Копирование конфигурации Nginx на сервер
-      - name: Copy nginx config
-        uses: appleboy/scp-action@v0.1.7
-        with:
-          host: ${{ secrets.HOST_NPEPUB }}
-          username: ${{ secrets.NAME_NPEPUB }}
-          key: ${{ secrets.SSH_KEY_NPEPUB }}
-          source: "config/prod/nginx.conf"
+          source: "docker-compose.yaml, config/prod/nginx.conf, task-scanner/docker-compose.yaml"
           target: "/opt/app-docker/check-task"
 
       # Деплой на сервере
