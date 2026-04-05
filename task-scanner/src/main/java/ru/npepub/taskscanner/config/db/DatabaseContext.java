@@ -10,7 +10,7 @@ class DatabaseContext {
     private static DSLContext dslContext;
 
     static void init(HikariDataSource dataSource) {
-        dslContext = DSL.using(dataSource, SQLDialect.H2);
+        dslContext = DSL.using(dataSource, SQLDialect.POSTGRES);
     }
 
     static DSLContext get() {

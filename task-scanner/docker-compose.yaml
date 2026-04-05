@@ -11,6 +11,8 @@ services:
     ports:
       - "7000:7000"
     restart: unless-stopped
+    volumes:
+      - ${HOST_SCAN_PATH}:/data/scan
 
   postgres:
     image: postgres:18-alpine
@@ -31,7 +33,6 @@ services:
   liquibase:
     image: liquibase/liquibase:4.33-alpine
     container_name: task-liquibase
-    user: root
     environment:
       - LIQUIBASE_SEARCH_PATH=/liquibase/changelog  # Добавьте это
     depends_on:

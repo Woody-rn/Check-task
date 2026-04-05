@@ -11,7 +11,6 @@ public class DatabaseConfig {
 
     private void init() {
         HikariDataSource dataSource = HikariConfigApp.createDataSource();
-        //DatabaseMigration.run(dataSource);
         DatabaseContext.init(dataSource);
     }
 
