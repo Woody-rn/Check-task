@@ -1,7 +1,7 @@
 services:
   scanner:
     image: ghcr.io/woody-rn/task-scanner:latest
-    container_name: task-scanner-dev
+    container_name: task-scanner-prod
     ports:
       - "7000:7000"
     restart: unless-stopped

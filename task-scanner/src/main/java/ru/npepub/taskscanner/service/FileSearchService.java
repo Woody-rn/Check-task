@@ -16,7 +16,7 @@ public class FileSearchService {
             return stream.filter(Files::isRegularFile)
                     .filter(this::isValidTxtFile)
                     .map(startPath::relativize)
-                    .filter(FilePatternUtils::matchesSprintTask)
+                    .filter(FilePatternUtils::isSprintTask)
                     .toList();
 
         } catch (IOException e) {

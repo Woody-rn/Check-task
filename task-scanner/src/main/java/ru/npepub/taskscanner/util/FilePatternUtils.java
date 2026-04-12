@@ -16,12 +16,13 @@ public final class FilePatternUtils {
     private FilePatternUtils() {
     }
 
-    private static Pattern getPattern(String regex) {
-        return PATTERN_CACHE.computeIfAbsent(regex, Pattern::compile);
-    }
-
-    private static Pattern getPattern(RegexPattern regexPattern) {
-        return getPattern(regexPattern.getRegex());
+    public static Optional<SprintTaskInfo> parse(Path path, RegexPattern regex) {
+        if (path == null || regex == null) {
+            return Optional.empty();
+        }
+        return Optional.of(getMatcher(path, regex))
+                .filter(Matcher::matches)
+                .map(FilePatternUtils::createSprintTaskInfo);
     }
 
     public static boolean matches(Path path, String regex) {
@@ -38,17 +39,27 @@ public final class FilePatternUtils {
         return matches(path, regex.getRegex());
     }
 
-    public static boolean matchesSprintTask(Path path) {
+    public static boolean isSprintTask(Path path) {
         return matches(path, RegexPattern.SPRINT_TASK);
     }
 
-    public static Optional<SprintTaskInfo> parse(Path path) {
-        return Optional.of(getPattern(RegexPattern.SPRINT_TASK)
-                        .matcher(path.toString()))
-                .filter(Matcher::matches)
-                .map(matcher -> new SprintTaskInfo(
-                        Long.parseLong(matcher.group(1)),
-                        Long.parseLong(matcher.group(2))
-                ));
+    private static SprintTaskInfo createSprintTaskInfo(Matcher matcher) {
+        return new SprintTaskInfo(
+                Long.parseLong(matcher.group(1)),
+                Long.parseLong(matcher.group(2))
+        );
+    }
+
+    private static Matcher getMatcher(Path path, RegexPattern regex) {
+        return getPattern(regex)
+                .matcher(path.toString());
+    }
+
+    private static Pattern getPattern(String regex) {
+        return PATTERN_CACHE.computeIfAbsent(regex, Pattern::compile);
+    }
+
+    private static Pattern getPattern(RegexPattern regexPattern) {
+        return getPattern(regexPattern.getRegex());
     }
 }

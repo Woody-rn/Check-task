@@ -4,6 +4,7 @@ import ru.npepub.taskscanner.entity.FileMetaDataEntity;
 import ru.npepub.taskscanner.entity.SprintEntity;
 import ru.npepub.taskscanner.entity.TaskEntity;
 import ru.npepub.taskscanner.util.FilePatternUtils;
+import ru.npepub.taskscanner.util.RegexPattern;
 
 import java.nio.file.Path;
 import java.util.List;
@@ -31,8 +32,8 @@ public class ProcessingCoordinator {
 
     private void saveFilesToDatabase(List<Path> relativePaths) {
         for (Path relativePath : relativePaths) {
-            System.out.println(relativePath.toString());
-            FilePatternUtils.parse(relativePath)
+            System.out.println("saveFilesToDatabase * " + relativePath.toString());
+            FilePatternUtils.parse(relativePath, RegexPattern.EXACT_TASK_FILE)
                     .ifPresent(info -> {
                         SprintEntity sprint = sprintService.getOrCreate(info.sprintNum());
                         System.out.println(sprint.toString());
