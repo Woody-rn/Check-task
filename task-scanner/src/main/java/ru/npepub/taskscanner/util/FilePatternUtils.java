@@ -45,8 +45,8 @@ public final class FilePatternUtils {
 
     private static SprintTaskInfo createSprintTaskInfo(Matcher matcher) {
         return new SprintTaskInfo(
-                Long.parseLong(matcher.group(1)),
-                Long.parseLong(matcher.group(2))
+                Integer.parseInt(matcher.group(1)),
+                Integer.parseInt(matcher.group(2))
         );
     }
 

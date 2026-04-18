@@ -65,4 +65,5 @@ services:
 
 networks:
   check_task_network:
+    name: check_task_network
     driver: bridge

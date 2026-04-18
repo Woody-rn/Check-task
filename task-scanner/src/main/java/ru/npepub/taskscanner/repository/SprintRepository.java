@@ -7,8 +7,7 @@ import ru.npepub.taskscanner.entity.SprintEntity;
 import java.util.Collection;
 import java.util.Optional;
 
-import static org.jooq.impl.DSL.field;
-import static org.jooq.impl.DSL.table;
+import static ru.npepub.taskscanner.jooq.generated.Tables.SPRINT;
 
 public class SprintRepository implements BaseRepository<SprintEntity, Long> {
 
@@ -23,26 +22,25 @@ public class SprintRepository implements BaseRepository<SprintEntity, Long> {
         return Optional.empty();
     }
 
-    public Optional<SprintEntity> findByNumber(Long sprintNum) {
-        return dsl.select()
-                .from("sprint")
-                .where("number = ?", sprintNum)
+    public Optional<SprintEntity> findByNumber(Integer sprintNum) {
+        return dsl.selectFrom(SPRINT)
+                .where(SPRINT.NUMBER.eq(sprintNum))
                 .fetchOptionalInto(SprintEntity.class);
     }
 
     @Override
     public Collection<SprintEntity> getAll() {
-        return dsl.selectFrom("sprint")
+        return dsl.selectFrom(SPRINT)
                 .fetchInto(SprintEntity.class);
     }
 
     @Override
     public SprintEntity save(SprintEntity entity) {
-        Long generatedId = dsl.insertInto(table("sprint"))
-                .set(field("number"), entity.getNumber())
-                .returningResult(field("id", Long.class))
+        Long generatedId = dsl.insertInto(SPRINT)
+                .set(SPRINT.NUMBER, entity.getNumber())
+                .returningResult(SPRINT.ID)
                 .fetchOptional()
-                .map(record -> record.get(field("id", Long.class)))
+                .map(record -> record.get(SPRINT.ID))
                 .orElseThrow(() -> new RuntimeException("Failed to save sprint"));
 
         entity.setId(generatedId);

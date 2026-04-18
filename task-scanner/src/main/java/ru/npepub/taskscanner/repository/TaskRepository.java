@@ -7,8 +7,7 @@ import ru.npepub.taskscanner.entity.TaskEntity;
 import java.util.Collection;
 import java.util.Optional;
 
-import static org.jooq.impl.DSL.field;
-import static org.jooq.impl.DSL.table;
+import static ru.npepub.taskscanner.jooq.generated.Tables.TASK;
 
 public class TaskRepository implements BaseRepository<TaskEntity, Long> {
 
@@ -25,19 +24,18 @@ public class TaskRepository implements BaseRepository<TaskEntity, Long> {
 
     @Override
     public Collection<TaskEntity> getAll() {
-        return dsl.select()
-                .from("task")
+        return dsl.selectFrom(TASK)
                 .fetchInto(TaskEntity.class);
     }
 
     @Override
     public TaskEntity save(TaskEntity entity) {
-        Long generatedId = dsl.insertInto(table("task"))
-                .set(field("number"), entity.getNumber())
-                .set(field("sprint_id"), entity.getSprintId())
-                .returningResult(field("id", Long.class))
+        Long generatedId = dsl.insertInto(TASK)
+                .set(TASK.NUMBER, entity.getNumber())
+                .set(TASK.SPRINT_ID, entity.getSprintId())
+                .returningResult(TASK.ID)
                 .fetchOptional()
-                .map(record -> record.get(field("id", Long.class)))
+                .map(record -> record.get(TASK.ID))
                 .orElseThrow(() -> new RuntimeException("Failed to save task"));
 
         entity.setId(generatedId);
@@ -54,15 +52,9 @@ public class TaskRepository implements BaseRepository<TaskEntity, Long> {
         return false;
     }
 
-    public Optional<TaskEntity> findBySprintIdAndTaskNumber(Long sprintId, Long taskNumber) {
-        return dsl.select(
-                        field("id"),
-                        field("sprint_id").as("sprintId"),
-                        field("number"),
-                        field("created_at").as("createdAt")
-                )
-                .from("task")
-                .where("sprint_id = ? AND number = ?", sprintId, taskNumber)
+    public Optional<TaskEntity> findBySprintIdAndTaskNumber(Long sprintId, Integer taskNumber) {
+        return dsl.selectFrom(TASK)
+                .where(TASK.SPRINT_ID.eq(sprintId).and(TASK.NUMBER.eq(taskNumber)))
                 .fetchOptionalInto(TaskEntity.class);
     }
 }

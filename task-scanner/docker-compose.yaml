@@ -9,3 +9,8 @@ services:
       - ${HOST_SCAN_PATH:-./scan-data}:/data/scan
     networks:
       - check_task_network
+
+networks:
+  check_task_network:
+    name: check_task_network
+    driver: bridge

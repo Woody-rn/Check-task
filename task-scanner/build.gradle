@@ -1,4 +1,5 @@
 apply plugin: "com.gradleup.shadow"
+apply plugin: "org.jooq.jooq-codegen-gradle"
 
 description = 'task-scanner'
 
@@ -12,6 +13,9 @@ dependencies {
 
     testImplementation(libs.junit.jupiter)
     testRuntimeOnly(libs.junit.platform)
+
+    // Зависимости для кодогенерации JOOQ
+    jooqCodegen("org.postgresql:postgresql:42.7.3")
 }
 
 jar {
@@ -19,5 +23,46 @@ jar {
         attributes(
                 'Main-Class': 'ru.npepub.taskscanner.TaskScanner'
         )
+    }
+}
+
+
+jooq {
+    configuration {
+        jdbc {
+            driver = 'org.postgresql.Driver'
+            url = env.DB_URL.orElse('jdbc:postgresql://localhost:5432/public')
+            user = env.DB_USERNAME.orElse('postgres')
+            password = env.DB_PASSWORD.orElse('postgres')
+        }
+
+        generator {
+            name = 'org.jooq.codegen.DefaultGenerator'
+            database {
+                name = 'org.jooq.meta.postgres.PostgresDatabase'
+                inputSchema = 'public'
+                includes = '.*'
+                excludes = 'databasechangelog|databasechangeloglock'
+            }
+
+            generate {
+                daos = true
+                pojos = false
+                javaTimeTypes = true
+                fluentSetters = true
+            }
+            target {
+                packageName = 'ru.npepub.taskscanner.jooq.generated'
+                directory = 'build/generated/sources/jooq'
+            }
+        }
+    }
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs("build/generated/sources/jooq")
+        }
     }
 }

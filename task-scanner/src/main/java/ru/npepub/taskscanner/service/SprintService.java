@@ -10,7 +10,7 @@ public class SprintService {
         this.sprintRepository = sprintRepository;
     }
 
-    public SprintEntity getOrCreate(Long sprintNum) {
+    public SprintEntity getOrCreate(Integer sprintNum) {
         return sprintRepository.findByNumber(sprintNum)
                 .orElseGet(() -> {
                     SprintEntity newSprint = SprintEntity.builder()

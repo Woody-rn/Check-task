@@ -13,6 +13,6 @@ import java.time.LocalDateTime;
 @ToString
 public class SprintEntity {
     private Long id;
-    private Long number;
+    private Integer number;
     private LocalDateTime createdAt;
 }

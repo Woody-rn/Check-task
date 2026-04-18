@@ -12,11 +12,10 @@ public class TaskService {
         this.taskRepository = taskRepository;
     }
 
-    public TaskEntity getOrCreate(SprintEntity sprint, Long taskNum) {
+    public TaskEntity getOrCreate(SprintEntity sprint, Integer taskNum) {
         return taskRepository
                 .findBySprintIdAndTaskNumber(sprint.getId(), taskNum)
                 .orElseGet(() -> {
-                    System.out.println("work save TaskService");
                     TaskEntity newTask = TaskEntity.builder()
                             .sprintId(sprint.getId())
                             .number(taskNum)

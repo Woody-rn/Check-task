@@ -32,15 +32,14 @@ public class ProcessingCoordinator {
 
     private void saveFilesToDatabase(List<Path> relativePaths) {
         for (Path relativePath : relativePaths) {
-            System.out.println("saveFilesToDatabase * " + relativePath.toString());
             FilePatternUtils.parse(relativePath, RegexPattern.EXACT_TASK_FILE)
                     .ifPresent(info -> {
                         SprintEntity sprint = sprintService.getOrCreate(info.sprintNum());
                         System.out.println(sprint.toString());
                         TaskEntity task = taskService.getOrCreate(sprint, info.taskNum());
-                        System.out.println(task.toString());
+                        System.out.println("\t " + task.toString());
                         FileMetaDataEntity fileMetaData = fileMetaDataService.getOrCreate(task, relativePath);
-                        System.out.println(fileMetaData.toString());
+                        System.out.println("\t\t " + fileMetaData.toString());
                     });
         }
     }

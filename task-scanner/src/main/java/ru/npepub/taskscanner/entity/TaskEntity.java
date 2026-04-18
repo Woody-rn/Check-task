@@ -14,6 +14,6 @@ import java.time.LocalDateTime;
 public class TaskEntity {
     private Long id;
     private Long sprintId;
-    private Long number;
+    private Integer number;
     private LocalDateTime createdAt;
 }
