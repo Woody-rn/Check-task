@@ -43,6 +43,7 @@ public final class FilePatternUtils {
         return matches(path, RegexPattern.SPRINT_TASK);
     }
 
+    //ToDO refactor
     private static SprintTaskInfo createSprintTaskInfo(Matcher matcher) {
         return new SprintTaskInfo(
                 Integer.parseInt(matcher.group(1)),

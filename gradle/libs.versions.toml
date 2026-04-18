@@ -10,7 +10,7 @@ openapi = "3.0.2"
 liquibase = "5.0.2"
 postgres = "42.7.10"
 hikari = "7.0.2"
-jooq-vers = "3.21.1"
+jooq-ver = "3.21.1"
 
 [libraries]
 lombok = { module = "org.projectlombok:lombok", version.ref = "lombok" }
@@ -20,7 +20,7 @@ thymeleaf = { module = "org.thymeleaf:thymeleaf", version.ref = "thymeleaf-vers"
 liquibase-core = { module = "org.liquibase:liquibase-core", version.ref = "liquibase" }
 postgresql = { module = "org.postgresql:postgresql", version.ref = "postgres" }
 hikariCP = { module = "com.zaxxer:HikariCP", version.ref = "hikari" }
-jooq = {module = "org.jooq:jooq", version.ref = "jooq-vers"}
+jooq = {module = "org.jooq:jooq", version.ref = "jooq-ver"}
 
 junit-jupiter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junit" }
 junit-platform = { module = "org.junit.platform:junit-platform-launcher", version.ref = "junit-platform" }
