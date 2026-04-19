@@ -12,10 +12,11 @@ import java.util.regex.Matcher;
 @Slf4j
 public class PathParserService {
 
-    public Optional<SprintTaskInfo> parse(Path path, RegexPattern regex) {
+    Optional<SprintTaskInfo> parse(Path path, RegexPattern regex) {
         if (path == null || regex == null) {
             return Optional.empty();
         }
+
         return Optional.of(FilePatternUtils.getMatcher(path, regex))
                 .filter(Matcher::matches)
                 .map(this::createSprintTaskInfo);

@@ -8,9 +8,11 @@ import ru.npepub.taskscanner.exception.ExceptionHandler;
 import ru.npepub.taskscanner.repository.*;
 import ru.npepub.taskscanner.service.*;
 import io.javalin.Javalin;
+import ru.npepub.taskscanner.util.FileExtension;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 public class DIContainer {
     private final Map<Class<?>, Object> instances = new HashMap<>();
@@ -35,7 +37,8 @@ public class DIContainer {
                 new FileMetaDataRepository(get(DatabaseConfig.class)));
 
         // Сервисы
-        registerSingleton(FileSearchService.class, new FileSearchService());
+        registerSingleton(FileSearchService.class,
+                new FileSearchService(Set.of(FileExtension.TXT)));
         registerSingleton(SprintService.class,
                 new SprintService(get(SprintRepository.class)));
         registerSingleton(TaskService.class,

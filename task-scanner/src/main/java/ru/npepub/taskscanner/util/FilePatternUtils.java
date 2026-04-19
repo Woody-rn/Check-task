@@ -13,10 +13,6 @@ public final class FilePatternUtils {
     private FilePatternUtils() {
     }
 
-    public static boolean isSprintTask(Path path) {
-        return matches(path, RegexPattern.SPRINT_TASK);
-    }
-
     public static Matcher getMatcher(Path path, RegexPattern regex) {
         return getPattern(regex)
                 .matcher(path.toString());

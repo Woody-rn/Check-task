@@ -14,7 +14,7 @@ public class TaskService {
         this.taskRepository = taskRepository;
     }
 
-    public TaskEntity getOrCreate(SprintEntity sprint, Integer taskNum) {
+    TaskEntity getOrCreate(SprintEntity sprint, Integer taskNum) {
         log.debug("Requesting task: sprintId={}, taskNumber={}", sprint.getId(), taskNum);
 
         return taskRepository

@@ -12,10 +12,14 @@ import ru.npepub.taskscanner.repository.FileMetaDataRepository;
 import ru.npepub.taskscanner.repository.SprintRepository;
 import ru.npepub.taskscanner.repository.TaskRepository;
 import ru.npepub.taskscanner.service.*;
+import ru.npepub.taskscanner.util.FileExtension;
+
+import java.util.Set;
 
 public class TaskScanner {
     public static void main(String[] args) {
-        var coordinator = init();
+        var fileExtensions = Set.of(FileExtension.TXT);
+        var coordinator = init(fileExtensions);
 
         var template = TemplateEngineConfigurator.create();
         var validator = new Validator();
@@ -29,13 +33,13 @@ public class TaskScanner {
         javalin.start(7000);
     }
 
-    private static ProcessingCoordinator init(){
+    private static ProcessingCoordinator init(Set<FileExtension> fileExtensions){
         var databaseConfig = new DatabaseConfig();
         var sprintRepository = new SprintRepository(databaseConfig);
         var taskRepository = new TaskRepository(databaseConfig);
         var fileMetaDataRepository = new FileMetaDataRepository(databaseConfig);
 
-        var fileSearchService = new FileSearchService();
+        var fileSearchService = new FileSearchService(fileExtensions);
         var pathParserService = new PathParserService();
 
         var sprintService = new SprintService(sprintRepository);
