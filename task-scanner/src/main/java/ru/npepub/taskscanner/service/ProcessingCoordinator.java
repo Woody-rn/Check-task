@@ -3,7 +3,6 @@ package ru.npepub.taskscanner.service;
 import ru.npepub.taskscanner.entity.FileMetaDataEntity;
 import ru.npepub.taskscanner.entity.SprintEntity;
 import ru.npepub.taskscanner.entity.TaskEntity;
-import ru.npepub.taskscanner.util.FilePatternUtils;
 import ru.npepub.taskscanner.util.RegexPattern;
 
 import java.nio.file.Path;
@@ -29,7 +28,7 @@ public class ProcessingCoordinator {
         this.fileMetaDataService = fileMetaDataService;
     }
 
-    public void scanFiles(String pathToDirectory) {
+    public void scanDirectory(String pathToDirectory) {
         List<Path> validFiles = fileSearchService.searchFiles(pathToDirectory);
         saveFilesToDatabase(validFiles);
     }
@@ -38,9 +37,9 @@ public class ProcessingCoordinator {
         for (Path relativePath : relativePaths) {
             pathParserService.parse(relativePath, RegexPattern.EXACT_TASK_FILE)
                     .ifPresent(info -> {
-                        SprintEntity sprint = sprintService.getOrCreate(info.sprintNum());
-                        TaskEntity task = taskService.getOrCreate(sprint, info.taskNum());
-                        FileMetaDataEntity fileMetaData = fileMetaDataService.getOrCreate(task, relativePath);
+                        SprintEntity sprint = sprintService.findOrSave(info.sprintNum());
+                        TaskEntity task = taskService.findOrSave(sprint, info.taskNum());
+                        FileMetaDataEntity fileMetaData = fileMetaDataService.findOrSave(task, relativePath);
                     });
         }
     }

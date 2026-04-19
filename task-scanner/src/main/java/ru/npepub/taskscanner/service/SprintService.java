@@ -12,7 +12,7 @@ public class SprintService {
         this.sprintRepository = sprintRepository;
     }
 
-    SprintEntity getOrCreate(Integer sprintNum) {
+    SprintEntity findOrSave(Integer sprintNum) {
         log.debug("Requesting sprint: number={} ", sprintNum);
 
         return sprintRepository.findByNumber(sprintNum)

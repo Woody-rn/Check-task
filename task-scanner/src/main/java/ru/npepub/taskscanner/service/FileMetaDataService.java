@@ -15,7 +15,7 @@ public class FileMetaDataService {
         this.fileMetaDataRepository = fileMetaDataRepository;
     }
 
-    FileMetaDataEntity getOrCreate(TaskEntity task, Path relativePath) {
+    FileMetaDataEntity findOrSave(TaskEntity task, Path relativePath) {
         String fileName = relativePath.getFileName().toString();
 
         log.debug("Requesting file metadata: taskId={}, fileName={}", task.getId(), fileName);

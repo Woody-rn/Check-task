@@ -33,7 +33,7 @@ public class ScanController {
         System.out.println("Recursive: " + recursive);
 
         // Здесь ваша логика сканирования
-        processingCoordinator.scanFiles(path);
+        processingCoordinator.scanDirectory(path);
 
         // Отправьте JSON обратно, как ожидает JavaScript
         Map<String, Object> result = new HashMap<>();
