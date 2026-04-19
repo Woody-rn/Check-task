@@ -10,15 +10,19 @@ import java.nio.file.Path;
 import java.util.List;
 
 public class ProcessingCoordinator {
+    private final PathParserService pathParserService;
     private final FileSearchService fileSearchService;
     private final SprintService sprintService;
     private final TaskService taskService;
     private final FileMetaDataService fileMetaDataService;
 
-    public ProcessingCoordinator(FileSearchService fileSearchService,
+    public ProcessingCoordinator(PathParserService pathParserService,
+                                 FileSearchService fileSearchService,
                                  SprintService sprintService,
                                  TaskService taskService,
                                  FileMetaDataService fileMetaDataService) {
+
+        this.pathParserService = pathParserService;
         this.fileSearchService = fileSearchService;
         this.sprintService = sprintService;
         this.taskService = taskService;
@@ -32,7 +36,7 @@ public class ProcessingCoordinator {
 
     private void saveFilesToDatabase(List<Path> relativePaths) {
         for (Path relativePath : relativePaths) {
-            FilePatternUtils.parse(relativePath, RegexPattern.EXACT_TASK_FILE)
+            pathParserService.parse(relativePath, RegexPattern.EXACT_TASK_FILE)
                     .ifPresent(info -> {
                         SprintEntity sprint = sprintService.getOrCreate(info.sprintNum());
                         TaskEntity task = taskService.getOrCreate(sprint, info.taskNum());

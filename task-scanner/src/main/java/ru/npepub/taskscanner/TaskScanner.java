@@ -36,12 +36,14 @@ public class TaskScanner {
         var fileMetaDataRepository = new FileMetaDataRepository(databaseConfig);
 
         var fileSearchService = new FileSearchService();
+        var pathParserService = new PathParserService();
 
         var sprintService = new SprintService(sprintRepository);
         var taskService = new TaskService(taskRepository);
         var fileMetaDataService = new FileMetaDataService(fileMetaDataRepository);
 
-        return new ProcessingCoordinator(fileSearchService,
+        return new ProcessingCoordinator(pathParserService,
+                fileSearchService,
                 sprintService,
                 taskService,
                 fileMetaDataService

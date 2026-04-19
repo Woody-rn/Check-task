@@ -22,51 +22,53 @@ public class DIContainer {
 
     private void initialize() {
         if (initialized) return;
-        
+
         // Конфигурация БД (синглтон)
         registerSingleton(DatabaseConfig.class, new DatabaseConfig());
-        
+
         // Репозитории
-        registerSingleton(SprintRepository.class, 
-            new SprintRepository(get(DatabaseConfig.class)));
-        registerSingleton(TaskRepository.class, 
-            new TaskRepository(get(DatabaseConfig.class)));
-        registerSingleton(FileMetaDataRepository.class, 
-            new FileMetaDataRepository(get(DatabaseConfig.class)));
-        
+        registerSingleton(SprintRepository.class,
+                new SprintRepository(get(DatabaseConfig.class)));
+        registerSingleton(TaskRepository.class,
+                new TaskRepository(get(DatabaseConfig.class)));
+        registerSingleton(FileMetaDataRepository.class,
+                new FileMetaDataRepository(get(DatabaseConfig.class)));
+
         // Сервисы
         registerSingleton(FileSearchService.class, new FileSearchService());
-        registerSingleton(SprintService.class, 
-            new SprintService(get(SprintRepository.class)));
-        registerSingleton(TaskService.class, 
-            new TaskService(get(TaskRepository.class)));
-        registerSingleton(FileMetaDataService.class, 
-            new FileMetaDataService(get(FileMetaDataRepository.class)));
-        
+        registerSingleton(SprintService.class,
+                new SprintService(get(SprintRepository.class)));
+        registerSingleton(TaskService.class,
+                new TaskService(get(TaskRepository.class)));
+        registerSingleton(FileMetaDataService.class,
+                new FileMetaDataService(get(FileMetaDataRepository.class)));
+
         // Координатор
-        registerSingleton(ProcessingCoordinator.class, new ProcessingCoordinator(
-            get(FileSearchService.class),
-            get(SprintService.class),
-            get(TaskService.class),
-            get(FileMetaDataService.class)
-        ));
-        
+        registerSingleton(ProcessingCoordinator.class,
+                new ProcessingCoordinator(
+                        get(PathParserService.class),
+                        get(FileSearchService.class),
+                        get(SprintService.class),
+                        get(TaskService.class),
+                        get(FileMetaDataService.class)
+                ));
+
         // Веб-слой
         registerSingleton(Validator.class, new Validator());
         registerSingleton(TemplateEngine.class, TemplateEngineConfigurator.create());
-        
+
         // Контроллер
         registerSingleton(ScanController.class, new ScanController(
-            get(ProcessingCoordinator.class),
-            get(TemplateEngine.class),
-            get(Validator.class)
+                get(ProcessingCoordinator.class),
+                get(TemplateEngine.class),
+                get(Validator.class)
         ));
-        
+
         // Конфигураторы
-        registerSingleton(RouteConfigurator.class, 
-            new RouteConfigurator(get(ScanController.class)));
+        registerSingleton(RouteConfigurator.class,
+                new RouteConfigurator(get(ScanController.class)));
         registerSingleton(ExceptionHandler.class, new ExceptionHandler());
-        
+
         initialized = true;
     }
 
@@ -81,8 +83,8 @@ public class DIContainer {
 
     public Javalin createJavalin() {
         return JavalinConfigurator.create(
-            get(ExceptionHandler.class),
-            get(RouteConfigurator.class)
+                get(ExceptionHandler.class),
+                get(RouteConfigurator.class)
         );
     }
 
