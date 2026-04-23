@@ -2,7 +2,7 @@ package ru.npepub.taskscanner.service;
 
 import ru.npepub.taskscanner.util.FileExtension;
 import ru.npepub.taskscanner.util.FilePatternUtils;
-import ru.npepub.taskscanner.util.RegexPattern;
+import ru.npepub.taskscanner.util.PathTemplate;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -21,10 +21,11 @@ public class FileSearchService {
                 : allowedExtensions;
     }
 
-    List<Path> searchFiles(String pathToDirectory) {
+    List<Path> findAbsolutePaths(String pathToDirectory) {
         Path startPath = Path.of(pathToDirectory);
         try (Stream<Path> stream = Files.walk(startPath)) {
             return stream.filter(Files::isRegularFile)
+                    .peek(System.out::println)
                     .filter(this::hasAllowedExtension)
                     .filter(this::isSprintTask)
                     .toList();
@@ -36,10 +37,10 @@ public class FileSearchService {
 
     private boolean hasAllowedExtension(Path path) {
         return allowedExtensions.stream()
-                .anyMatch(ext -> ext.matches(path));
+                .anyMatch(ext -> FilePatternUtils.matches(path, ext.getExtension()));
     }
 
     private boolean isSprintTask(Path path) {
-        return FilePatternUtils.matches(path, RegexPattern.SPRINT_TASK);
+        return FilePatternUtils.matches(path, PathTemplate.SPRINT_TASK);
     }
 }

@@ -13,12 +13,12 @@ public final class FilePatternUtils {
     private FilePatternUtils() {
     }
 
-    public static Matcher getMatcher(Path path, RegexPattern regex) {
+    public static Matcher getMatcher(Path path, PathTemplate regex) {
         return getPattern(regex)
                 .matcher(path.toString());
     }
 
-    public static boolean matches(Path path, RegexPattern regex) {
+    public static boolean matches(Path path, PathTemplate regex) {
         return matches(path, regex.getRegex());
     }
 
@@ -26,7 +26,6 @@ public final class FilePatternUtils {
         if (regex == null || path == null) {
             return false;
         }
-
         return getPattern(regex)
                 .matcher(path.toString())
                 .matches();
@@ -36,7 +35,7 @@ public final class FilePatternUtils {
         return PATTERN_CACHE.computeIfAbsent(regex, Pattern::compile);
     }
 
-    private static Pattern getPattern(RegexPattern regexPattern) {
+    private static Pattern getPattern(PathTemplate regexPattern) {
         return getPattern(regexPattern.getRegex());
     }
 }
