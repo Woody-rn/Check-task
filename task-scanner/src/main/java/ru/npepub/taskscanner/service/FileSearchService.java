@@ -25,9 +25,8 @@ public class FileSearchService {
         Path startPath = Path.of(pathToDirectory);
         try (Stream<Path> stream = Files.walk(startPath)) {
             return stream.filter(Files::isRegularFile)
-                    .peek(System.out::println)
                     .filter(this::hasAllowedExtension)
-                    .filter(this::isSprintTask)
+                    .filter(this::matchesSprintTaskPath)
                     .toList();
 
         } catch (IOException e) {
@@ -40,7 +39,7 @@ public class FileSearchService {
                 .anyMatch(ext -> FilePatternUtils.matches(path, ext.getExtension()));
     }
 
-    private boolean isSprintTask(Path path) {
+    private boolean matchesSprintTaskPath(Path path) {
         return FilePatternUtils.matches(path, PathTemplate.SPRINT_TASK);
     }
 }

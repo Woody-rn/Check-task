@@ -1,4 +1,4 @@
-package ru.npepub.taskscanner.config;
+package ru.npepub.taskscanner.config.web;
 
 import io.javalin.Javalin;
 import ru.npepub.taskscanner.controller.ScanController;

@@ -37,7 +37,7 @@ public class ProcessingCoordinator {
 
     private void saveFilesToDatabase(List<Path> paths) {
         for (Path path : paths) {
-            Optional<SprintTaskInfo> infoOptional = pathParserService.parse(path, PathTemplate.SPRINT_TASK_FILE);
+            Optional<SprintTaskInfo> infoOptional = pathParserService.parse(path, PathTemplate.TASK_FILE_NO_SUBFOLDERS);
             if(infoOptional.isPresent()) {
                 SprintTaskInfo info = infoOptional.get();
 

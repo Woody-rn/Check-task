@@ -1,4 +1,4 @@
-package ru.npepub.taskscanner.config;
+package ru.npepub.taskscanner.config.web;
 
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.templatemode.TemplateMode;

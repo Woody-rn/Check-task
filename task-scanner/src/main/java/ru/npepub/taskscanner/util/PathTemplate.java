@@ -5,8 +5,8 @@ import lombok.Getter;
 @Getter
 public enum PathTemplate {
 
-    SPRINT_TASK(".*?sprint_(\\d+).*?task_(\\d+).*"),
-    SPRINT_TASK_FILE(".*?sprint_(\\d+)[\\\\/]task_(\\d+)[\\\\/][^\\\\/]+\\.txt$");
+    SPRINT_TASK(".*?sprint_(\\d+)[\\\\/]task_(\\d+).*"),
+    TASK_FILE_NO_SUBFOLDERS(".*?sprint_(\\d+)[\\\\/]task_(\\d+)[\\\\/][^\\\\/]+$");
 
     private final String regex;
 
