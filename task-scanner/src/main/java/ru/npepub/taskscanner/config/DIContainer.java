@@ -68,11 +68,17 @@ public class DIContainer {
     }
 
     private void registerServiceComponents() {
-        registerSingleton(PathParserService.class,
-                new PathParserService());
         registerSingleton(FileSearchService.class,
                 new FileSearchService(
                         Set.of(FileExtension.TXT)));
+        registerSingleton(PathParserService.class,
+                new PathParserService());
+        registerSingleton(FileInfoCollector.class,
+                new FileInfoCollector(
+                        get(FileSearchService.class),
+                        get(PathParserService.class)
+                ));
+
         registerSingleton(SprintService.class,
                 new SprintService(
                         get(SprintRepository.class)));
@@ -83,10 +89,10 @@ public class DIContainer {
                 new FileMetaDataService(
                         get(FileMetaDataRepository.class)));
 
+
         registerSingleton(ProcessingCoordinator.class,
                 new ProcessingCoordinator(
-                        get(PathParserService.class),
-                        get(FileSearchService.class),
+                        get(FileInfoCollector.class),
                         get(SprintService.class),
                         get(TaskService.class),
                         get(FileMetaDataService.class)

@@ -21,12 +21,12 @@ public class FileSearchService {
                 : allowedExtensions;
     }
 
-    List<Path> findAbsolutePaths(String pathToDirectory) {
-        Path startPath = Path.of(pathToDirectory);
-        try (Stream<Path> stream = Files.walk(startPath)) {
+    List<Path> findAbsolutePaths(Path pathToDirectory) {
+        try (Stream<Path> stream = Files.walk(pathToDirectory)) {
             return stream.filter(Files::isRegularFile)
                     .filter(this::hasAllowedExtension)
                     .filter(this::matchesSprintTaskPath)
+                    .map(Path::toAbsolutePath)
                     .toList();
 
         } catch (IOException e) {
