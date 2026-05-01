@@ -1,15 +1,13 @@
 #build project
-FROM eclipse-temurin:21-jdk-alpine AS builder
+FROM gradle:9.3.1-jdk21-alpine AS builder
 WORKDIR /app
-COPY gradlew ./
-COPY gradle gradle
+COPY gradle/libs.versions.toml gradle/
 COPY build.gradle settings.gradle ./
 COPY task-todo-list/build.gradle task-todo-list/
 
-RUN chmod +x gradlew
-RUN ./gradlew dependencies --no-daemon
+RUN gradle dependencies --no-daemon
 COPY task-todo-list/src task-todo-list/src
-RUN ./gradlew :task-todo-list:bootJar --no-daemon
+RUN gradle :task-todo-list:bootJar --no-daemon
 
 #run project
 FROM eclipse-temurin:21-jre-alpine
