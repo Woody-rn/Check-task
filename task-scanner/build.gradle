@@ -10,6 +10,7 @@ dependencies {
     implementation(libs.postgresql)
     implementation(libs.hikariCP)
     implementation(libs.jooq)
+    //implementation("io.minio:minio:9.0.0")
 
     testImplementation(libs.junit.jupiter)
     testRuntimeOnly(libs.junit.platform)
@@ -52,7 +53,7 @@ if (gradle.startParameter.taskNames.contains(':task-scanner:jooqCodegen') ||
                 }
                 target {
                     packageName = 'ru.npepub.taskscanner.jooq.generated'
-                    directory = 'build/generated/sources/jooq'
+                    directory = 'src/main/generated-jooq'
                 }
             }
         }
@@ -62,7 +63,7 @@ if (gradle.startParameter.taskNames.contains(':task-scanner:jooqCodegen') ||
 sourceSets {
     main {
         java {
-            srcDirs("build/generated/sources/jooq")
+            srcDirs("src/main/generated-jooq")
         }
     }
 }

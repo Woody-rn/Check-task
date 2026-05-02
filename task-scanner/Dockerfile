@@ -4,7 +4,6 @@ WORKDIR /app
 COPY gradle/libs.versions.toml gradle/
 COPY build.gradle settings.gradle ./
 COPY task-scanner/build.gradle task-scanner/
-COPY task-scanner/build/generated/sources/jooq /app/task-scanner/build/generated/sources/jooq
 
 RUN gradle dependencies --no-daemon
 COPY task-scanner/src task-scanner/src

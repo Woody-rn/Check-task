@@ -1,6 +1,5 @@
 .gradle
 build/
-!task-scanner/build/generated/sources/jooq
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
