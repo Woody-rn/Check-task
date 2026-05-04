@@ -4,9 +4,8 @@ on:
   push:
     branches: [ master ]
     paths:
-      - 'task-todo-list/**'
       - 'docker-compose.yaml'
-      - '.github/workflows/deploy.yml'
+      - '.github/workflows/deploy-vps.yml'
   workflow_dispatch:  # Ручной запуск из UI GitHub
 
 jobs:
@@ -63,7 +62,7 @@ jobs:
           host: ${{ secrets.HOST_NPEPUB }}
           username: ${{ secrets.NAME_NPEPUB }}
           key: ${{ secrets.SSH_KEY_NPEPUB }}
-          source: "docker-compose.yaml, .env, config/prod/nginx.conf"
+          source: "docker-compose.yaml, .env, config/prod/nginx.conf, liquibase/"
           target: "/opt/app-docker/check-task"
 
       # Деплой на сервере
