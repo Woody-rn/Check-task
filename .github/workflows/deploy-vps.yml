@@ -2,7 +2,7 @@ name: Deploy to VPS
 
 on:
   push:
-    branches: [ main ]
+    branches: [ master ]
     paths:
       - 'task-todo-list/**'
       - 'docker-compose.yaml'
@@ -28,7 +28,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }} # это автоматический секрет, GitHub сам создает этот токен для каждого запуска
 
       # Сборка и публикация образа
-      - name: Build and push
+      - name: Build and push task-todo-list
         uses: docker/build-push-action@v5
         with:
           context: .
@@ -45,14 +45,25 @@ jobs:
           push: true
           tags: ghcr.io/woody-rn/task-scanner:latest
 
+      # ✅ Создаём .env из секретов
+      - name: Create .env for production
+        run: |
+          cat > .env << 'EOF'
+          DB_NAME=${{ secrets.DB_NAME }}
+          DB_USERNAME=${{ secrets.DB_USERNAME }}
+          DB_PASSWORD=${{ secrets.DB_PASSWORD }}
+          MINIO_ROOT_USER=${{ secrets.MINIO_ROOT_USER }}
+          MINIO_ROOT_PASSWORD=${{ secrets.MINIO_ROOT_PASSWORD }}
+          EOF
+
       # Копирование docker-compose.yml и конфигурации Nginx на сервер
-      - name: Copy compose file
+      - name: Copy compose file and configs
         uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.HOST_NPEPUB }}
           username: ${{ secrets.NAME_NPEPUB }}
           key: ${{ secrets.SSH_KEY_NPEPUB }}
-          source: "docker-compose.yaml, config/prod/nginx.conf, task-scanner/docker-compose.yaml"
+          source: "docker-compose.yaml, .env, config/prod/nginx.conf"
           target: "/opt/app-docker/check-task"
 
       # Деплой на сервере

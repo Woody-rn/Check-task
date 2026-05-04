@@ -3,7 +3,7 @@ services:
     build:
       context: .
       dockerfile: task-scanner/Dockerfile
-    image: task-scanner-dev:latest
+    image: task-scanner-dev:local
     container_name: task-scanner-dev
     ports:
       - "7000:7000"
@@ -12,7 +12,7 @@ services:
     build:
       context: .
       dockerfile: task-todo-list/Dockerfile
-    image: task-todo-list:local
+    image: task-todo-list-dev:local
     container_name: task-todo-list-dev
     ports:
       - "8080:8080"
@@ -20,3 +20,8 @@ services:
   postgres:
     ports:
       - 5432:5432
+
+  nginx:
+    volumes:
+      # Монтируем наш конфигурационный файл внутрь контейнера
+      - ./config/dev/nginx.conf:/etc/nginx/conf.d/default.conf:ro

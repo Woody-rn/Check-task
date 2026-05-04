@@ -10,7 +10,7 @@ services:
     image: ghcr.io/woody-rn/task-scanner:latest
     container_name: task-scanner-prod
     environment:
-      - DB_URL=jdbc:postgresql://task-postgres:5432/${DB_NAME}
+      - DB_URL=jdbc:postgresql://postgres:5432/${DB_NAME}
       - DB_USERNAME=${DB_USERNAME}
       - DB_PASSWORD=${DB_PASSWORD}
     volumes:
@@ -48,13 +48,12 @@ services:
       POSTGRES_DB: ${DB_NAME}
       POSTGRES_INITDB_ARGS: "--encoding=UTF8 --locale=ru_RU.UTF-8"
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U ${DB_USERNAME} -d ${DB_NAME}" ]
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME} -d ${DB_NAME}"]
       interval: 10s
       timeout: 5s
       retries: 5
     volumes:
-      - postgres_data:/var/lib/postgresql/data
-      - postgres_lib:/var/lib/postgresql
+      - postgres_data:/var/lib/postgresql
     networks:
       - check_task_network
     restart: unless-stopped
@@ -68,7 +67,7 @@ services:
       postgres:
         condition: service_healthy
     command:
-      - --url=jdbc:postgresql://task-postgres:5432/${DB_NAME}
+      - --url=jdbc:postgresql://postgres:5432/${DB_NAME}
       - --username=${DB_USERNAME}
       - --password=${DB_PASSWORD}
       - --changeLogFile=changelog-master.yaml
