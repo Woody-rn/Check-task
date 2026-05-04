@@ -16,6 +16,7 @@ public class JavalinConfigurator {
     private static Javalin createConfiguredJavalin() {
         return Javalin.create(
                 config -> {
+                    //config.router.contextPath = "/scan";
                     // Настройка статики из папки src/main/resources/public
                     config.staticFiles.add("/public", Location.CLASSPATH);
                 }

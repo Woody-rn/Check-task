@@ -6,6 +6,7 @@ class HikariConfigApp {
 
     private static HikariDataSource dataSource;
 
+    //todo
     static HikariDataSource createDataSource() {
         com.zaxxer.hikari.HikariConfig config = new com.zaxxer.hikari.HikariConfig();
         String hostDb = System.getenv().getOrDefault("HOST_BD", "task-postgres");

@@ -80,3 +80,4 @@ jobs:
             cd /opt/app-docker/check-task
             docker compose pull  # Принудительно скачиваем новый образ
             docker compose up -d
+            docker compose exec nginx nginx -t && docker compose exec nginx nginx -s reload

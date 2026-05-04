@@ -14,10 +14,7 @@ public class RouteConfigurator {
 
         app.get("/", scanController::get);
 
-        app.post("/scan", ctx -> {
-            scanController.scanAndUpload(ctx);
-
-        });
+        app.post("/upload", scanController::scanAndUpload);
 
        /* // API endpoint
         app.post("/api/v1/upload-files", ctx -> {

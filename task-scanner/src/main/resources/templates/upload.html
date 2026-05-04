@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Scan Folder</title>
-    <link rel="stylesheet" href="/styles.css">
+    <script src="config.js"></script>
+    <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
@@ -78,7 +79,7 @@
         resultElement.innerHTML = '<div class="loading"><i class="fas fa-spinner"></i><br>Сканирование...</div>';
 
         try {
-            const response = await fetch('http://localhost:7000/scan', {
+            const response = await fetch(`${window.APP_CONFIG.BASE_PATH}/upload`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ path, recursive })
