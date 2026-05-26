@@ -5,7 +5,6 @@ on:
     branches: [ master ]
     paths:
       - 'docker-compose.yaml'
-      - '.github/workflows/deploy-vps.yml'
   workflow_dispatch:  # Ручной запуск из UI GitHub
 
 jobs:
